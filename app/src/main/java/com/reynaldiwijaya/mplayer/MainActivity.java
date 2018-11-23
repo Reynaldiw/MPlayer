@@ -12,6 +12,7 @@ import co.mobiwise.library.OnActionClickedListener;
 public class MainActivity extends AppCompatActivity implements OnActionClickedListener{
 
     private InteractivePlayerView ipv;
+    private Button control;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +21,10 @@ public class MainActivity extends AppCompatActivity implements OnActionClickedLi
 
         ipv = findViewById(R.id.ipv);
         ipv.setMax(123);
-        ipv.setProgress(78);
+        ipv.setProgress(0);
         ipv.setOnActionClickedListener(this);
 
-        final Button control = findViewById(R.id.btnPlay);
+        control = findViewById(R.id.btnPlay);
         control.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
