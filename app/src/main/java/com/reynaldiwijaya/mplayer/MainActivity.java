@@ -1,5 +1,8 @@
 package com.reynaldiwijaya.mplayer;
 
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,14 +16,27 @@ public class MainActivity extends AppCompatActivity implements OnActionClickedLi
 
     private InteractivePlayerView ipv;
     private Button control;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sympony);
+
+        //Call Music
+        Uri uri = Uri.parse("android.resource://com.reynaldiwijaya.mplayer/raw/sympony");
+        //Mengetahui durasi musicnya
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(MainActivity.this, uri);
+
+        String durationString = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        int milli = Integer.parseInt(durationString);
+        milli = milli/1000;
+
         ipv = findViewById(R.id.ipv);
-        ipv.setMax(123);
+        ipv.setMax(milli);
         ipv.setProgress(0);
         ipv.setOnActionClickedListener(this);
 
@@ -31,9 +47,11 @@ public class MainActivity extends AppCompatActivity implements OnActionClickedLi
                 if (!ipv.isPlaying()){
                     ipv.start();
                     control.setText("Pause");
+                    mediaPlayer.start();
                 }else {
                     ipv.stop();
                     control.setText("Play");
+                    mediaPlayer.pause();
                 }
             }
         });
